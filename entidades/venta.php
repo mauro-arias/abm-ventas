@@ -3,6 +3,7 @@
 class Venta{
     private $idventa;
     private $fecha;
+    private $hora;
     private $cantidad;
     private $fk_producto;
     private $fk_idcliente;
@@ -27,6 +28,7 @@ class Venta{
     public function cargarFormulario($request){
         $this->idventa = isset($request["id"])? $request["id"] : "";
         $this->fecha = isset($request["txtFecha"])? $request["txtFecha"] : "";
+        $this->hora = isset($request["txtHora"])? $request["txtHora"] : "";
         $this->cantidad = isset($request["nbCantidad"])? $request["nbCantidad"] : "";
         $this->fk_producto = isset($request["lstProducto"])? $request["lstProducto"] : "";
         $this->fk_idcliente = isset($request["lstCliente"])? $request["lstCliente"] : "";
@@ -47,7 +49,7 @@ class Venta{
             precio_unitario,
             total)
             VALUES (
-            '" . $this->fecha . "',
+            '" . $this->fecha . ' ' . $this->hora . "',
             $this->cantidad,
             $this->fk_producto,
             $this->fk_idcliente,

@@ -1,7 +1,11 @@
 
 <?php
 
-session_start();
+include_once "config.php";
+include_once "entidades/producto.php";
+
+$producto = new Producto();
+$aProductos = $producto->obtenerTodos();
 
 ?>
 
@@ -123,7 +127,18 @@ session_start();
                             <th>Cantidad</th>
                             <th>Precio</th>
                             <th>Acciones</th>
+                          <?php foreach($aProductos as $producto){?>
+                            <tr>
+                              <td></td>
+                              <td><?php echo $producto->nombre;?></td>
+                              <td><?php echo $producto->cantidad;?></td>
+                              <td><?php echo "$" . $producto->precio;?></td>
+                              <td colspan = "2"><a href="cliente-formulario.php"><i class="fas fa-search"></i></a></td>
+                            </tr>
+
+                          <?php } ?>
                         </table>
+
                         
                     </div>
                 

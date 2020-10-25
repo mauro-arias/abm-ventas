@@ -10,6 +10,9 @@ include_once "entidades/venta.php";
 $producto = new Producto();
 $producto->cargarFormulario($_REQUEST);
 
+$tipoproducto = new TipoProducto();
+$aTipoProductos = $tipoproducto->obtenerTodos();
+
 if($_POST){
   if(isset($_POST["btnGuardar"])){
     if(isset($_GET["id"]) && $_GET["id"] > 0){
@@ -148,7 +151,11 @@ if($_POST){
 
               <div class="col-12 col-sm-6 form-group">
                 <label for="lstTipoProducto">Tipo de producto:</label>
-                <select name="lstTipoProducto" id="lstTipoProducto" class = "form-control selectpicker border" data-live-search="true"></select>
+                <select name="lstTipoProducto" id="lstTipoProducto" class = "form-control selectpicker border" data-live-search="true">
+                  <?php foreach($aTipoProductos as $tipo_producto){?>
+                    <option value="<?php echo $tipo_producto->idtipoproducto ?>"><?php echo $tipo_producto->nombre ?></option>
+                  <?php } ?>
+                </select>
               </div>
 
               <div class="col-12 col-sm-6 form-group">
