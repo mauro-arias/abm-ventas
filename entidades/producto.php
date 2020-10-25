@@ -48,7 +48,7 @@ class Producto{
             '" . $this->nombre . "',
             $this->cantidad,
             $this->precio,
-            '" . $this->descripcion . "',
+            '" . $this->descripcion. "',
             '" . $this->fk_idtipoproducto . "'
             );";
 
@@ -58,7 +58,7 @@ class Producto{
 
         $this->idproducto = $mysqli->insert_id;
 
-        $mysqli.close();
+        $mysqli->close();
 
     }
 

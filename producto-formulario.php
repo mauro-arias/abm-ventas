@@ -1,7 +1,26 @@
 
 <?php
 
-session_start();
+include_once "config.php";
+include_once "entidades/cliente.php";
+include_once "entidades/producto.php";
+include_once "entidades/tipoproducto.php";
+include_once "entidades/venta.php";
+
+$producto = new Producto();
+$producto->cargarFormulario($_REQUEST);
+
+if($_POST){
+  if(isset($_POST["btnGuardar"])){
+    if(isset($_GET["id"]) && $_GET["id"] > 0){
+      $producto->actualizar();
+    } else{
+      $producto->insertar();
+    }
+  } else if(isset($_POST["btnBorrar"])){
+    $producto->borrar();
+  }
+}
 
 ?>
 
@@ -32,7 +51,7 @@ session_start();
 </head>
 
 <body id="page-top">
-  <form action = "" method = "POST">
+  <form action = "" method = "POST" enctype = "multipart/form-data">
     <!-- Page Wrapper -->
     <div id="wrapper">
 

@@ -12,7 +12,7 @@ $tipo_producto->cargarFormulario($_REQUEST);
 
 if($_POST){
     if(isset($_POST["btnGuardar"])){
-        if(isset($_POST["id"]) && $_POST["id"] > 0){
+        if(isset($_GET["id"]) && $_GET["id"] > 0){
             $tipo_producto->actualizar();
         } else{
             $tipo_producto->insertar();
