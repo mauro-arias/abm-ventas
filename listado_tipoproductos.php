@@ -111,7 +111,7 @@ session_start();
           <!-- Begin Page Content -->
           <div class="container">
             <h1 class="h3 mb-4 text-gray-800">Tipo de productos</h1>
-            <a href="producto-formulario.php" class="btn btn-primary mr-2">Nuevo</a>
+            <a href="tipoproducto-formulario.php" class="btn btn-primary mr-2">Nuevo</a>
             
                 
             <table class = "table border table-hover mt-3">

@@ -31,6 +31,7 @@ class Venta{
         $this->fk_producto = isset($request["lstProducto"])? $request["lstProducto"] : "";
         $this->fk_idcliente = isset($request["lstCliente"])? $request["lstCliente"] : "";
         $this->total = isset($request["nbTotal"])? $request["nbTotal"] : "";
+        $this->precio = isset($request["nbPUnitario"])? $request["nbPUnitario"] : "";
     }
 
     #Insertar en la base de datos
@@ -43,12 +44,14 @@ class Venta{
             cantidad,
             fk_producto,
             fk_cliente,
+            precio_unitario,
             total)
             VALUES (
             '" . $this->fecha . "',
             $this->cantidad,
             $this->fk_producto,
             $this->fk_idcliente,
+            $this->precio,
             $this->total
             );";
 
@@ -58,7 +61,7 @@ class Venta{
 
         $this->idventa = $mysqli->insert_id;
 
-        $mysqli.close();
+        $mysqli->close();
 
     }
 
@@ -81,7 +84,6 @@ class Venta{
         $mysqli->close();
     }
 
-    # SEGUIR CAMBIANDO LOS DATOS
 
     public function eliminar(){
         $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
@@ -113,8 +115,9 @@ class Venta{
             $this->total = $fila["total"];
             $this->cantidad = $fila["cantidad"];
             $this->precio = $fila["precio_unitario"];
-            $this->descripcion = $fila["imagen"];
-            $this->fk_idtipoproducto = $fila["fk_idtipoproducto"];
+            $this->fecha = $fila["fecha_hora"];
+            $this->fk_idcliente = $fila["fk_cliente"];
+            $this->fk_producto = $fila["fk_producto"];
         }  
         $mysqli->close();
     }
@@ -123,14 +126,14 @@ class Venta{
         $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
 
 
-        $sql = "SELECT idproducto, 
-                        nombre, 
+        $sql = "SELECT idventa, 
                         cantidad, 
-                        precio, 
-                        descripcion, 
-                        imagen,
-                        fk_idtipoproducto 
-                FROM productos";
+                        total, 
+                        precio_unitario, 
+                        fecha_hora,
+                        fk_cliente,
+                        fk_producto 
+                FROM ventas";
 
         if(!$resultado = $mysqli->query($sql)){
             printf("Error en query: %s\n", $mysqli->error . " " . $sql);
@@ -140,14 +143,14 @@ class Venta{
 
         if($resultado){
             while($fila = $resultado->fetch_assoc()){
-                $entidadAux = new Producto();
-                $entidadAux->idproducto = $fila["idproducto"];
-                $entidadAux->nombre = $fila["nombre"];
+                $entidadAux = new Venta();
+                $entidadAux->idventa = $fila["idventa"];
+                $entidadAux->total = $fila["total"];
                 $entidadAux->cantidad = $fila["cantidad"];
                 $entidadAux->precio = $fila["precio"];
-                $entidadAux->descripcion = $fila["descripcion"];
-                $entidadAux->imagen = $fila["imagen"];
-                $entidadAux->fk_idtipoproducto = $fila["fk_idtipoproducto"];
+                $entidadAux->fecha = $fila["fecha_hora"];
+                $entidadAux->fk_idcliente = $fila["fk_cliente"];
+                $entidadAux->fk_producto = $fila["fk_producto"];
                 $aResultado[] = $entidadAux;
             }
         }

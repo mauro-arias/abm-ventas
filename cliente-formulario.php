@@ -11,6 +11,7 @@ include_once "entidades/venta.php";
 $cliente = new Cliente();
 $cliente->cargarFormulario($_REQUEST);
 
+
 if($_POST){
   if(isset($_POST["btnGuardar"])){
     if(isset($_GET["id"]) && $_GET["id"] > 0){

@@ -1,28 +1,7 @@
 
 <?php
 
-include_once "config.php";
-include_once "entidades/cliente.php";
-include_once "entidades/producto.php";
-include_once "entidades/tipoproducto.php";
-include_once "entidades/venta.php";
-
-$venta = new Venta();
-$venta->cargarFormulario($_REQUEST);
-
-if($_POST){
-  if(isset($_POST["btnGuardar"])){
-    if(isset($_POST["id"]) && $_POST["id"] > 0){
-      $venta->actualizar();
-    } else {
-      $venta->insertar();
-    }
-  }else if(isset($_POST["btnBorrar"])){
-    $venta->borrar();
-  }
-  
-
-}
+session_start();
 
 ?>
 
@@ -38,7 +17,7 @@ if($_POST){
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Gestión de Ventas | Venta</title>
+  <title>Gestión de Ventas | Tipos de producto</title>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -92,7 +71,8 @@ if($_POST){
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
 
-  
+              
+
               <div class="topbar-divider d-none d-sm-block"></div>
 
               <!-- Nav Item - User Information -->
@@ -130,58 +110,25 @@ if($_POST){
 
           <!-- Begin Page Content -->
           <div class="container">
-            <h1 class="h3 mb-4 text-gray-800">Venta</h1>
+            <h1 class="h3 mb-4 text-gray-800">Tipo de productos</h1>
 
             <div class="row">
               <div class="col-12 mb-3">
-                <a href="listado-ventas.php" class="btn btn-primary mr-2">Listado</a>
-                <a href="venta-formulario.php" class="btn btn-primary mr-2">Nuevo</a>
+                <a href="listado_tipoproductos.php" class="btn btn-primary mr-2">Listado</a>
+                <a href="tipoproducto-formulario.php" class="btn btn-primary mr-2">Nuevo</a>
                 <button type="submit" class="btn btn-success mr-2" id="btnGuardar" name="btnGuardar">Guardar</button>
                 <button type="submit" class="btn btn-danger" id="btnBorrar" name="btnBorrar">Borrar</button>
               </div>
             </div>
-
+                        
             <div class="row">
-              <div class="col-12 col-sm-6 form-group">
-                <label for="txtFecha">Fecha:</label>
-                <input value = "<?php echo date('Y') . '-' . date('m') . '-' . date('d');?>" class = "form-control" type="date" name = "txtFecha" id = "txtFecha">
-              </div>
-
-              <div class="col-12 col-sm-6 form-group">
-                <label for="txtHora">Hora:</label>
-                <input value = "<?php echo date('H:i');?>"class = "form-control" type="time" name = "txtHora" id = "txtHora">
-              </div>
-
-              <div class="col-12 col-sm-6 form-group">
-                <label for="lstCliente">Cliente:</label>
-                <select name="lstCliente" id="lstCliente" class = "form-control selectpicker border" data-live-search="true"></select>
-              </div>
-
-              <div class="col-12 col-sm-6 form-group dropdown bootstrap-select">
-                <label for="lstProducto">Producto:</label>
-                <select name="lstProducto" id="lstProducto" class = "form-control selectpicker border" data-live-search="true"></select>
-              </div>
-
-              <div class="col-12 col-sm-6 form-group">
-                <label for="nbPUnitario">Precio unitario:</label>
-                <input type="number" value = 0 class = "form-control" name ="nbPUnitario" id = "nbPUnitario" >
-              </div>
-
-              <div class="col-12 col-sm-6 form-group">
-                <label for="nbCantidad">Cantidad:</label>
-                <input type="number" value = 0 class = "form-control" name ="nbCantidad" id = "nbCantidad" >
-              </div>
-
-              <div class="col-12 col-sm-6 form-group">
-                <label for="nbTotal">Total:</label>
-                <input type="number" value = 0 class = "form-control" name ="nbTotal" id = "nbTotal" >
-              </div>
-
-              
+                <div class="col-12 form-group mt-2">
+                    <label for="txtTipoProducto">Nombre:</label>
+                    <input class = "form-control" type="text" name = "txtTipoProducto" id = "txtTipoProducto">
+                </div>
             </div>
-
-
-
+            
+            
             <script>
         ClassicEditor
             .create( document.querySelector( '#txtDescripcion' ) )
