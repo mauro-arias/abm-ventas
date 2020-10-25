@@ -1,7 +1,28 @@
 
 <?php
 
-session_start();
+include_once "config.php";
+include_once "entidades/cliente.php";
+include_once "entidades/producto.php";
+include_once "entidades/tipoproducto.php";
+include_once "entidades/venta.php";
+
+$tipo_producto = new TipoProducto();
+$tipo_producto->cargarFormulario($_REQUEST);
+
+if($_POST){
+    if(isset($_POST["btnGuardar"])){
+        if(isset($_POST["id"]) && $_POST["id"] > 0){
+            $tipo_producto->actualizar();
+        } else{
+            $tipo_producto->insertar();
+        }
+
+    } else if(isset($_POST["btnBorrar"])){
+        $tipo_producto->borrar();
+    }
+}
+
 
 ?>
 

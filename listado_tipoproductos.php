@@ -1,7 +1,11 @@
 
 <?php
 
-session_start();
+include_once "config.php";
+include_once "entidades/tipoproducto.php";
+
+$tipo_producto = new TipoProducto();
+$aTipoProductos = $tipo_producto->obtenerTodos();
 
 ?>
 
@@ -119,6 +123,14 @@ session_start();
                 <th>Nombre</th>
                 <th style = "width: 110px;">Acciones</th>
               </tr>
+
+              <?php foreach($aTipoProductos as $tipoproducto){?>
+                <tr>
+                  <td><?php echo $tipoproducto->nombre;?></td>
+                  <td colspan = "2"><a href="cliente-formulario.php"><i class="fas fa-search"></i></a></td>
+                </tr>
+
+              <?php } ?>
             </table>
             
             <script>
