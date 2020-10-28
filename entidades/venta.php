@@ -57,8 +57,14 @@ class Venta{
             $this->total
             );";
 
+        $sql2 = "UPDATE productos SET cantidad = cantidad - $this->cantidad WHERE idproducto = $this->fk_producto ";
+
         if (!$mysqli->query($sql)){
             printf("Error en query: %s\n", $mysqli->error . " " . $sql);
+        }
+
+        if(!$mysqli->query($sql2)){
+            printf("Error en query: %s\n", $mysqli->error . " " . $sql2);
         }
 
         $this->idventa = $mysqli->insert_id;
@@ -149,7 +155,7 @@ class Venta{
                 $entidadAux->idventa = $fila["idventa"];
                 $entidadAux->total = $fila["total"];
                 $entidadAux->cantidad = $fila["cantidad"];
-                $entidadAux->precio = $fila["precio"];
+                $entidadAux->precio = $fila["precio_unitario"];
                 $entidadAux->fecha = $fila["fecha_hora"];
                 $entidadAux->fk_idcliente = $fila["fk_cliente"];
                 $entidadAux->fk_producto = $fila["fk_producto"];

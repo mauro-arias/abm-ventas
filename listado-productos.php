@@ -132,8 +132,8 @@ $aProductos = $producto->obtenerTodos();
                               <td></td>
                               <td><?php echo $producto->nombre;?></td>
                               <td><?php echo $producto->cantidad;?></td>
-                              <td><?php echo "$" . $producto->precio;?></td>
-                              <td colspan = "2"><a href="cliente-formulario.php"><i class="fas fa-search"></i></a></td>
+                              <td><?php echo "$" . number_format($producto->precio, 2, ",", ".");?></td>
+                              <td colspan = "2"><a href="producto-formulario.php?id=<?php echo $producto->idproducto;?>"><i class="fas fa-search"></i></a></td>
                             </tr>
 
                           <?php } ?>

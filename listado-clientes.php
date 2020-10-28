@@ -140,7 +140,7 @@ $aClientes = $cliente->obtenerTodos();
                                 <td><?php echo $cliente->telefono;?></td>
                                 <td><?php echo $cliente->correo;?></td>
                                 <td></td>
-                                <td colspan = "2"><a href="cliente-formulario.php"><i class="fas fa-search"></i></a></td>
+                                <td colspan = "2"><a href="cliente-formulario.php?id=<?php echo $cliente->idcliente; ?>"><i class="fas fa-search"></i></a></td>
                               </tr>
 
                             <?php } ?>

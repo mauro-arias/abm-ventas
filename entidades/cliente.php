@@ -70,7 +70,7 @@ class Cliente{
         cuit = '".$this->cuit."',
         telefono = '".$this->telefono."',
         correo = '".$this->correo."',
-        fecha_nac = '".$this->fecha."'
+        fecha_nac = '".$this->fecha_nac."'
         WHERE idcliente = ". $this->idcliente;
         
 

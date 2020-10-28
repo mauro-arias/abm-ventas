@@ -19,8 +19,13 @@ if($_POST){
         }
 
     } else if(isset($_POST["btnBorrar"])){
-        $tipo_producto->borrar();
+        $tipo_producto->eliminar();
     }
+}
+
+if(isset($_GET["id"]) && $_GET["id"] > 0){
+  $tipo_producto->idtipoproducto = $_GET["id"];
+  $tipo_producto->obtenerPorId();
 }
 
 
@@ -131,6 +136,14 @@ if($_POST){
 
           <!-- Begin Page Content -->
           <div class="container">
+          <?php if(isset($_POST["btnGuardar"])){
+                echo "<div class = ' mb-4 card bg-success text-white shadow'><div class = 'card-body'>El tipo de producto se añadió correctamente </div></div>";
+            } else if(isset($_POST["btnBorrar"]) && isset($_GET["id"])){
+              echo "<div class = ' mb-4 card bg-danger text-white shadow'><div class = 'card-body'>El tipo de producto se eliminó correctamente</div></div>";
+            }
+            
+            ?>
+
             <h1 class="h3 mb-4 text-gray-800">Tipo de productos</h1>
 
             <div class="row">
@@ -145,7 +158,7 @@ if($_POST){
             <div class="row">
                 <div class="col-12 form-group mt-2">
                     <label for="txtTipoProducto">Nombre:</label>
-                    <input class = "form-control" type="text" name = "txtTipoProducto" id = "txtTipoProducto">
+                    <input required value = "<?php echo $tipo_producto->nombre; ?>" class = "form-control" type="text" name = "txtTipoProducto" id = "txtTipoProducto">
                 </div>
             </div>
             

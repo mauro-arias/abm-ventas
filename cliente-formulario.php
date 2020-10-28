@@ -21,8 +21,13 @@ if($_POST){
     }
 
   } else if(isset($_POST["btnBorrar"])){
-    $cliente->eliminar;
+    $cliente->eliminar();
   }
+}
+
+if(isset($_GET["id"]) && $_GET["id"] > 0){
+  $cliente->id = $_GET["id"];
+  $cliente->obtenerPorId();
 }
 
 ?>
@@ -129,6 +134,13 @@ if($_POST){
 
           <!-- Begin Page Content -->
           <div class="container">
+            <?php if(isset($_POST["btnGuardar"])){
+                echo "<div class = ' mb-4 card bg-success text-white shadow'><div class = 'card-body'>El cliente se añadió correctamente </div></div>";
+            } else if(isset($_POST["btnBorrar"]) && isset($_GET["id"])){
+              echo "<div class = ' mb-4 card bg-danger text-white shadow'><div class = 'card-body'>El cliente se eliminó correctamente</div></div>";
+            }
+            
+            ?>
             <h1 class="h3 mb-4 text-gray-800">Cliente</h1>
 
             <div class="row">
@@ -143,27 +155,27 @@ if($_POST){
             <div class="row">
               <div class="col-12 col-sm-6 form-group">
                 <label for="txtNombre">Nombre:</label>
-                <input class = "form-control" type="text" name = "txtNombre" id = "txtNombre">
+                <input required value = "<?php echo $cliente->nombre; ?>" class = "form-control" type="text" name = "txtNombre" id = "txtNombre">
               </div>
 
               <div class="col-12 col-sm-6">
                 <label for="txtCuit">CUIT:</label>
-                <input class = "form-control" type="text" name = "txtCuit" id = "txtCuit">
+                <input required value = "<?php echo $cliente->cuit; ?>"class = "form-control" type="text" name = "txtCuit" id = "txtCuit">
               </div>
 
               <div class="col-12 col-sm-6 form-group">
                 <label for="txtFecha">Fecha de nacimiento:</label>
-                <input class = "form-control" type="date" name = "txtFecha" id = "txtFecha">
+                <input required value = "<?php echo $cliente->fecha_nac; ?>"class = "form-control" type="date" name = "txtFecha" id = "txtFecha">
               </div>
 
               <div class="col-12 col-sm-6">
                 <label for="txtTelefono">Teléfono:</label>
-                <input class = "form-control" type="tel" name = "txtTelefono" id = "txtTelefono">
+                <input required value = "<?php echo $cliente->telefono; ?>" class = "form-control" type="tel" name = "txtTelefono" id = "txtTelefono">
               </div>
 
               <div class="col-12 col-sm-6 form-group">
                 <label for="txtCorreo">Correo:</label>
-                <input class = "form-control" type="email" name = "txtCorreo" id = "txtCorreo">
+                <input required value = "<?php echo $cliente->correo; ?>"class = "form-control" type="email" name = "txtCorreo" id = "txtCorreo">
               </div>
 
               

@@ -10,6 +10,12 @@ include_once "entidades/venta.php";
 $venta = new Venta();
 $venta->cargarFormulario($_REQUEST);
 
+$producto = new Producto();
+$aProductos = $producto->obtenerTodos();
+
+$cliente = new Cliente();
+$aClientes = $cliente->obtenerTodos();
+
 if($_POST){
   if(isset($_POST["btnGuardar"])){
     if(isset($_POST["id"]) && $_POST["id"] > 0){
@@ -18,10 +24,14 @@ if($_POST){
       $venta->insertar();
     }
   }else if(isset($_POST["btnBorrar"])){
-    $venta->borrar();
+    $venta->eliminar();
   }
-  
 
+}
+
+if(isset($_GET["id"]) && $_GET["id"] > 0){
+  $venta->idventa = $_GET["id"];
+  $venta->obtenerPorId();
 }
 
 ?>
@@ -130,6 +140,11 @@ if($_POST){
 
           <!-- Begin Page Content -->
           <div class="container">
+            <?php if(isset($_POST["btnGuardar"])){
+                  echo "<div class = ' mb-4 card bg-success text-white shadow'><div class = 'card-body'>La venta se registró correctamente </div></div>";
+              } else if(isset($_POST["btnBorrar"]) && isset($_GET["id"])){
+                echo "<div class = ' mb-4 card bg-danger text-white shadow'><div class = 'card-body'>La venta se eliminó correctamente</div></div>";
+              } ?>
             <h1 class="h3 mb-4 text-gray-800">Venta</h1>
 
             <div class="row">
@@ -144,37 +159,45 @@ if($_POST){
             <div class="row">
               <div class="col-12 col-sm-6 form-group">
                 <label for="txtFecha">Fecha:</label>
-                <input value = "<?php echo date('Y') . '-' . date('m') . '-' . date('d');?>" class = "form-control" type="date" name = "txtFecha" id = "txtFecha">
+                <input required value = "<?php echo isset($_GET["id"])? date_format(date_create($venta->fecha), 'Y-m-d') : date('Y') . '-' . date('m') . '-' . date('d');?>" class = "form-control" type="date" name = "txtFecha" id = "txtFecha">
               </div>
 
               <div class="col-12 col-sm-6 form-group">
                 <label for="txtHora">Hora:</label>
-                <input value = "<?php echo date('H:i');?>"class = "form-control" type="time" name = "txtHora" id = "txtHora">
+                <input required value = "<?php echo isset($_GET["id"])? $venta->hora : date('H:i');?>"class = "form-control" type="time" name = "txtHora" id = "txtHora">
               </div>
 
               <div class="col-12 col-sm-6 form-group">
                 <label for="lstCliente">Cliente:</label>
-                <select name="lstCliente" id="lstCliente" class = "form-control selectpicker border" data-live-search="true"></select>
+                <select name="lstCliente" id="lstCliente" class = "form-control selectpicker border" data-live-search="true">
+                <?php foreach($aClientes as $cliente){?>
+                  <option value="<?php echo $cliente->idcliente ?>"><?php echo $cliente->nombre ?></option>
+                <?php } ?>
+                </select>
               </div>
 
               <div class="col-12 col-sm-6 form-group dropdown bootstrap-select">
                 <label for="lstProducto">Producto:</label>
-                <select name="lstProducto" id="lstProducto" class = "form-control selectpicker border" data-live-search="true"></select>
+                <select name="lstProducto" id="lstProducto" class = "form-control selectpicker border" data-live-search="true">
+                <?php foreach($aProductos as $producto){?>
+                  <option value="<?php echo $producto->idproducto ?>"><?php echo $producto->nombre ?></option>
+                <?php } ?>
+                </select>
               </div>
 
               <div class="col-12 col-sm-6 form-group">
                 <label for="nbPUnitario">Precio unitario:</label>
-                <input type="number" value = 0 class = "form-control" name ="nbPUnitario" id = "nbPUnitario" >
+                <input required type="number" value = "<?php echo $venta->precio;?>" class = "form-control" name ="nbPUnitario" id = "nbPUnitario" >
               </div>
 
               <div class="col-12 col-sm-6 form-group">
                 <label for="nbCantidad">Cantidad:</label>
-                <input type="number" value = 0 class = "form-control" name ="nbCantidad" id = "nbCantidad" >
+                <input required type="number" value = "<?php echo $venta->cantidad;?>" class = "form-control" name ="nbCantidad" id = "nbCantidad" >
               </div>
 
               <div class="col-12 col-sm-6 form-group">
                 <label for="nbTotal">Total:</label>
-                <input type="number" value = 0 class = "form-control" name ="nbTotal" id = "nbTotal" >
+                <input required type="number" value = "<?php echo $venta->total;?>" class = "form-control" name ="nbTotal" id = "nbTotal" >
               </div>
 
               

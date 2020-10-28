@@ -14,15 +14,6 @@ session_start();
       $usuario = trim($_POST["txtUsuario"]);
       $clave = trim($_POST["txtClave"]);
     
-      if ($usuario == "admin" && $clave == password_verify($clave, $claveEncriptada)){
-        $nombre = "Mauro Arias";
-        $_SESSION["nombre"] = $nombre;
-        header("Location: index.php");
-      } else {
-        $msg = "El usuario o la clave es incorrecto";
-        echo " <div class='alert alert-danger' role='alert'>" . $msg ."  </div>";
-      }
-    
     }
 
     ?>
@@ -63,6 +54,19 @@ session_start();
                             <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
                             <div class="col-lg-6">
                                 <div class="p-5">
+                                    <?php 
+                                        if($_POST){
+                                            
+                                            if ($usuario == "admin" && $clave == password_verify($clave, $claveEncriptada)){
+                                                $nombre = "Mauro Arias";
+                                                $_SESSION["nombre"] = $nombre;
+                                                header("Location: index.php");
+                                            } else {
+                                                $msg = "El usuario o la clave es incorrecto";
+                                                echo " <div class='alert alert-danger' role='alert'>" . $msg ."  </div>";
+                                            }
+                                        }
+                                    ?>
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Bienvenido!</h1>
                                     </div>

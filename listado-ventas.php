@@ -1,7 +1,13 @@
 
 <?php
 
-session_start();
+include_once "config.php";
+include_once "entidades/venta.php";
+include_once "entidades/cliente.php";
+include_once "entidades/producto.php";
+
+$venta = new Venta();
+$aVentas = $venta->obtenerTodos();
 
 ?>
 
@@ -124,6 +130,30 @@ session_start();
                             <th>Cliente</th>
                             <th>Total</th>
                             <th>Acciones</th>
+
+                            <?php foreach($aVentas as $venta){
+                              $cliente = new Cliente();
+                              $cliente->idcliente = $venta->fk_idcliente;
+                              $cliente->obtenerPorId();
+
+                              $producto = new Producto();
+                              $producto->idproducto = $venta->fk_producto;
+                              $producto->obtenerPorId();
+
+                              ?>
+                              <tr>
+
+
+                                <td><?php echo $venta->fecha . " " . $venta->hora;?></td>
+                                <td><?php echo $venta->cantidad;?></td>
+                                <td><?php echo $producto->nombre;?></td>
+                                <td><?php echo $cliente->nombre;?></td>
+                                <td>$<?php echo number_format($venta->total, 2, ",", ".");?></td>
+                                <td colspan = "2"><a href="venta-formulario.php?id=<?php echo $venta->idventa; ?>"><i class="fas fa-search"></i></a></td>
+                              </tr>
+
+                            <?php } ?>
+
                         </table>
                         
                     </div>

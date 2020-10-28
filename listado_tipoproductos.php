@@ -127,7 +127,7 @@ $aTipoProductos = $tipo_producto->obtenerTodos();
               <?php foreach($aTipoProductos as $tipoproducto){?>
                 <tr>
                   <td><?php echo $tipoproducto->nombre;?></td>
-                  <td colspan = "2"><a href="cliente-formulario.php"><i class="fas fa-search"></i></a></td>
+                  <td colspan = "2"><a href="tipoproducto-formulario.php?id=<?php echo $tipoproducto->idtipoproducto;?>"><i class="fas fa-search"></i></a></td>
                 </tr>
 
               <?php } ?>

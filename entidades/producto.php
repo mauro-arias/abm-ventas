@@ -68,8 +68,8 @@ class Producto{
         $sql = "UPDATE productos SET 
         nombre = '".$this->nombre."',
         cantidad = $this->cantidad ,
-        precio = $this->telefono,
-        descripcion = '".$this->correo."',
+        precio = $this->precio,
+        descripcion = '".$this->descripcion."',
         fk_idtipoproducto = $this->fk_idtipoproducto
         WHERE idproducto = ". $this->idproducto;
         
@@ -111,7 +111,7 @@ class Producto{
             $this->nombre = $fila["nombre"];
             $this->cantidad = $fila["cantidad"];
             $this->precio = $fila["precio"];
-            $this->descripcion = $fila["imagen"];
+            $this->descripcion = $fila["descripcion"];
             $this->fk_idtipoproducto = $fila["fk_idtipoproducto"];
         }  
         $mysqli->close();

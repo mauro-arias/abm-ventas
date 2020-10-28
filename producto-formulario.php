@@ -21,8 +21,12 @@ if($_POST){
       $producto->insertar();
     }
   } else if(isset($_POST["btnBorrar"])){
-    $producto->borrar();
+    $producto->eliminar();
   }
+}
+if(isset($_GET["id"]) && $_GET["id"] > 0){
+  $producto->idproducto = $_GET["id"];
+  $producto->obtenerPorId();
 }
 
 ?>
@@ -132,6 +136,13 @@ if($_POST){
 
           <!-- Begin Page Content -->
           <div class="container">
+          <?php if(isset($_POST["btnGuardar"])){
+                echo "<div class = ' mb-4 card bg-success text-white shadow'><div class = 'card-body'>El producto se registró correctamente</div></div>";
+            } else if(isset($_POST["btnBorrar"]) && isset($_GET["id"])){
+              echo "<div class = ' mb-4 card bg-danger text-white shadow'><div class = 'card-body'>El producto se eliminó correctamente</div></div>";
+            }
+            
+            ?>
             <h1 class="h3 mb-4 text-gray-800">Producto</h1>
 
             <div class="row">
@@ -146,7 +157,7 @@ if($_POST){
             <div class="row">
               <div class="col-12 col-sm-6 form-group">
                 <label for="txtNombre">Nombre:</label>
-                <input class = "form-control" type="text" name = "txtNombre" id = "txtNombre">
+                <input required value = "<?php echo $producto->nombre;?>" class = "form-control" type="text" name = "txtNombre" id = "txtNombre">
               </div>
 
               <div class="col-12 col-sm-6 form-group">
@@ -160,18 +171,18 @@ if($_POST){
 
               <div class="col-12 col-sm-6 form-group">
                 <label for="nbCantidad">Cantidad:</label>
-                <input class = "form-control" type="number" name = "nbCantidad" id = "nbCantidad">
+                <input required value = "<?php echo $producto->cantidad;?>" class = "form-control" type="number" name = "nbCantidad" id = "nbCantidad">
               </div>
 
               <div class="col-12 col-sm-6">
                 <label for="nbPrecio">Precio:</label>
-                <input value = 0 class = "form-control" type="number" name = "nbPrecio" id = "txtPrecio">
+                <input required value = "<?php echo $producto->precio;?>" class = "form-control" type="number" name = "nbPrecio" id = "txtPrecio">
               </div>
 
 
               <div class="col-12 mt-2">
                 <label for="txtDescripcion">Descripcion:</label>
-                <textarea type="text" name="txtDescripcion" id="txtDescripcion"></textarea>
+                <textarea type="text" name="txtDescripcion" id="txtDescripcion"><?php echo $producto->descripcion;?></textarea>
 
               </div>
 
