@@ -83,6 +83,8 @@ class Venta{
         fk_cliente = $this->fk_idcliente,
         total = $this->total
         WHERE idventa = ". $this->idventa;
+
+        $cantidadAuxiliar = $this->cantidad;
         
 
         if (!$mysqli->query($sql)){
