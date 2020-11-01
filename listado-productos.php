@@ -129,11 +129,11 @@ $aProductos = $producto->obtenerTodos();
                             <th>Acciones</th>
                           <?php foreach($aProductos as $producto){?>
                             <tr>
-                              <td></td>
+                              <td><img style = "height: 100px;" class = "img-thumbnail" src="images/<?php echo $producto->imagen;?>" alt=""></td>
                               <td><?php echo $producto->nombre;?></td>
                               <td><?php echo $producto->cantidad;?></td>
                               <td><?php echo "$" . number_format($producto->precio, 2, ",", ".");?></td>
-                              <td colspan = "2"><a href="producto-formulario.php?id=<?php echo $producto->idproducto;?>"><i class="fas fa-search"></i></a></td>
+                              <td><a href="producto-formulario.php?id=<?php echo $producto->idproducto;?>"><i class="fas fa-search"></i></a></td>
                             </tr>
 
                           <?php } ?>

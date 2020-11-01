@@ -25,12 +25,28 @@ class Producto{
     # Carga formulario
 
     public function cargarFormulario($request){
+        # Cargar valores
         $this->idproducto = isset($request["id"])? $request["id"] : "";
         $this->nombre = isset($request["txtNombre"])? $request["txtNombre"] : "";
         $this->cantidad = isset($request["nbCantidad"])? $request["nbCantidad"] : "";
         $this->precio = isset($request["nbPrecio"])? $request["nbPrecio"] : "";
         $this->descripcion = isset($request["txtDescripcion"])? $request["txtDescripcion"] : "";
         $this->fk_idtipoproducto = isset($request["lstTipoProducto"])? $request["lstTipoProducto"] : "";
+        $this->imagen = "";
+
+        # Cargar imagen
+        if(isset($_POST["btnGuardar"])){
+            if($_FILES["fileImagen"]["error"] === UPLOAD_ERR_OK){
+                $nombreAleatorio = date("Ymdhmsi");
+                $archivo_temp = $_FILES["fileImagen"]["tmp_name"];
+                $nombreArchivo = $_FILES["fileImagen"]["name"];
+                $extension = pathinfo($nombreArchivo, PATHINFO_EXTENSION);
+                $nombreImagen = $nombreAleatorio . "." . $extension;
+                move_uploaded_file($archivo_temp, "images/$nombreImagen");
+                $this->imagen = $nombreImagen;
+            }
+        }
+
     }
 
     #Insertar en la base de datos
@@ -43,13 +59,15 @@ class Producto{
             cantidad,
             precio,
             descripcion,
-            fk_idtipoproducto)
+            fk_idtipoproducto,
+            imagen)
             VALUES (
             '" . $this->nombre . "',
             $this->cantidad,
             $this->precio,
             '" . $this->descripcion. "',
-            '" . $this->fk_idtipoproducto . "'
+            '" . $this->fk_idtipoproducto . "',
+            '" . $this->imagen . "'
             );";
 
         if (!$mysqli->query($sql)){
@@ -64,15 +82,16 @@ class Producto{
 
     public function actualizar(){
         $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
-
+        
+    
         $sql = "UPDATE productos SET 
         nombre = '".$this->nombre."',
         cantidad = $this->cantidad ,
         precio = $this->precio,
+        imagen = '".$this->imagen."',
         descripcion = '".$this->descripcion."',
         fk_idtipoproducto = $this->fk_idtipoproducto
         WHERE idproducto = ". $this->idproducto;
-        
 
         if (!$mysqli->query($sql)){
             printf("Error en query: %s\n", $mysqli->error . " " . $sql);
@@ -83,7 +102,25 @@ class Producto{
 
     public function eliminar(){
         $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
+        # QUERY PARA SELECCIONAR LA IMG
+        $sql2 = "SELECT imagen FROM productos WHERE idproducto = " . $this->idproducto;
+        $imagen = $mysqli->query($sql2);
+
+        # ASIGNAMOS EL NOMBRE DE LA IMAGEN AL OBJETO
+
+        if ($fila = $imagen->fetch_assoc()){
+            $this->imagen = $fila["imagen"];
+        }
+
         $sql = "DELETE FROM productos WHERE idproducto = " . $this->idproducto;
+
+        # Borrar imagen
+        if ($this->imagen != ""){
+            if (file_exists("images/" . $this->imagen)){
+                unlink("images/". $this->imagen);
+            }
+        }
+
 
         if (!$mysqli->query($sql)) {
             printf("Error en query: %s\n", $mysqli->error . " " . $sql);
