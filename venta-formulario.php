@@ -167,7 +167,7 @@ if(isset($_GET["id"]) && $_GET["id"] > 0){
 
               <div class="col-12 col-sm-6 form-group">
                 <label for="txtHora">Hora:</label>
-                <input required value = "<?php echo isset($_GET["id"])? $venta->hora : date('H:i');?>"class = "form-control" type="time" name = "txtHora" id = "txtHora">
+                <input required value = "<?php echo isset($_GET["id"])? date_format(date_create($venta->hora), "H:i:s") : date('H:i');?>" class = "form-control" type="time" name = "txtHora" id = "txtHora">
               </div>
 
               <div class="col-12 col-sm-6 form-group">

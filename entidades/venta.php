@@ -126,6 +126,7 @@ class Venta{
             $this->cantidad = $fila["cantidad"];
             $this->precio = $fila["precio_unitario"];
             $this->fecha = $fila["fecha_hora"];
+            $this->hora = $fila["fecha_hora"];
             $this->fk_idcliente = $fila["fk_cliente"];
             $this->fk_producto = $fila["fk_producto"];
         }  
