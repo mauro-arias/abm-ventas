@@ -132,22 +132,12 @@ $aVentas = $venta->obtenerTodos();
                             <th>Acciones</th>
 
                             <?php foreach($aVentas as $venta){
-                              $cliente = new Cliente();
-                              $cliente->idcliente = $venta->fk_idcliente;
-                              $cliente->obtenerPorId();
-
-                              $producto = new Producto();
-                              $producto->idproducto = $venta->fk_producto;
-                              $producto->obtenerPorId();
-
                               ?>
                               <tr>
-
-
                                 <td><?php echo $venta->fecha . " " . $venta->hora;?></td>
                                 <td><?php echo $venta->cantidad;?></td>
-                                <td><?php echo $producto->nombre;?></td>
-                                <td><?php echo $cliente->nombre;?></td>
+                                <td><?php echo $venta->nombre_producto;?></td>
+                                <td><?php echo $venta->nombre_cliente;?></td>
                                 <td>$<?php echo number_format($venta->total, 2, ",", ".");?></td>
                                 <td colspan = "2"><a href="venta-formulario.php?id=<?php echo $venta->idventa; ?>"><i class="fas fa-search"></i></a></td>
                               </tr>

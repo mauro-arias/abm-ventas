@@ -137,14 +137,18 @@ class Venta{
         $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
 
 
-        $sql = "SELECT idventa, 
-                        cantidad, 
-                        total, 
-                        precio_unitario, 
-                        fecha_hora,
-                        fk_cliente,
-                        fk_producto 
-                FROM ventas";
+        $sql = "SELECT V.idventa, 
+                V.total,
+                V.fecha_hora,
+                V.fk_cliente,
+                V.fk_producto,
+                V.cantidad,
+                V.precio_unitario,
+                P.nombre AS nombre_producto, 
+                C.nombre AS nombre_cliente FROM ventas V
+                INNER JOIN clientes C ON C.idcliente = V.fk_cliente
+                INNER JOIN productos P ON P.idproducto = V.fk_producto
+                ORDER BY fecha_hora DESC ";
 
         if(!$resultado = $mysqli->query($sql)){
             printf("Error en query: %s\n", $mysqli->error . " " . $sql);
@@ -162,6 +166,8 @@ class Venta{
                 $entidadAux->fecha = $fila["fecha_hora"];
                 $entidadAux->fk_idcliente = $fila["fk_cliente"];
                 $entidadAux->fk_producto = $fila["fk_producto"];
+                $entidadAux->nombre_cliente = $fila["nombre_cliente"];
+                $entidadAux->nombre_producto = $fila["nombre_producto"];
                 $aResultado[] = $entidadAux;
             }
         }
