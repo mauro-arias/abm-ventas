@@ -17,11 +17,14 @@ if($_POST){
   if(isset($_POST["btnGuardar"])){
     if(isset($_GET["id"]) && $_GET["id"] > 0){
       $producto->actualizar();
+      $mensaje = "El producto se actualizó correctamente";
     } else{
       $producto->insertar();
+      $mensaje = "El producto se registró correctamente";
     }
   } else if(isset($_POST["btnBorrar"])){
     $producto->eliminar();
+    $mensaje = "El producto se eliminó correctamente";
   }
 }
 if(isset($_GET["id"]) && $_GET["id"] > 0){
@@ -137,9 +140,11 @@ if(isset($_GET["id"]) && $_GET["id"] > 0){
           <!-- Begin Page Content -->
           <div class="container">
           <?php if(isset($_POST["btnGuardar"])){
-                echo "<div class = ' mb-4 card bg-success text-white shadow'><div class = 'card-body'>El producto se registró correctamente</div></div>";
+                echo "<div class = ' mb-4 card bg-success text-white shadow'><div class = 'card-body'>$mensaje</div></div>";
             } else if(isset($_POST["btnBorrar"]) && isset($_GET["id"])){
-              echo "<div class = ' mb-4 card bg-danger text-white shadow'><div class = 'card-body'>El producto se eliminó correctamente</div></div>";
+              echo "<div class = ' mb-4 card bg-danger text-white shadow'><div class = 'card-body'>$mensaje</div></div>";
+            } else if(isset($_POST["btnGuardar"]) && isset($_GET["id"])){
+              echo "<div class = ' mb-4 card bg-danger text-white shadow'><div class = 'card-body'>$mensaje</div></div>";
             }
             
             ?>

@@ -57,17 +57,36 @@ class Venta{
             $this->total
             );";
 
-        $sql2 = "UPDATE productos SET cantidad = cantidad - $this->cantidad WHERE idproducto = $this->fk_producto ";
+        
 
-        if (!$mysqli->query($sql)){
-            printf("Error en query: %s\n", $mysqli->error . " " . $sql);
-        }
+        // Query para restar el stock al realizar la venta
+        $sql2 = "SELECT cantidad FROM productos";
+        
 
-        if(!$mysqli->query($sql2)){
+        if(!$resultado = $mysqli->query($sql2)){
             printf("Error en query: %s\n", $mysqli->error . " " . $sql2);
         }
+        
+        $fila = $resultado->fetch_assoc();
+        $cantidadActual = $fila["cantidad"];
+        
+        $sql3 = "UPDATE productos SET cantidad = cantidad - $this->cantidad WHERE idproducto = $this->fk_producto ";
 
-        $this->idventa = $mysqli->insert_id;
+        # VERIFICAMOS SI LA CANTIDAD DEL STOCK ES MENOR A LA VENTA
+
+        if($cantidadActual < $this->cantidad){
+            echo "La cantidad ingresada es mayor a la del stock disponible, la venta no se realizó";
+        } else{
+            # INSERTAMOS LA VENTA
+            if (!$mysqli->query($sql)){
+                printf("Error en query: %s\n", $mysqli->error . " " . $sql);
+            }
+            # RESTAMOS LA CANTIDAD DE LA VENTA AL STOCK
+            $this->idventa = $mysqli->insert_id;
+            if (!$mysqli->query($sql3)){
+                printf("Error en query: %s\n", $mysqli->error . " " . $sql3);
+            }
+        }
 
         $mysqli->close();
 
@@ -84,7 +103,6 @@ class Venta{
         total = $this->total
         WHERE idventa = ". $this->idventa;
 
-        $cantidadAuxiliar = $this->cantidad;
         
 
         if (!$mysqli->query($sql)){
