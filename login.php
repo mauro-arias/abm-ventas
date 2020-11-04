@@ -1,22 +1,24 @@
 <?php
 
-session_start();
+include_once "config.php";
+include_once "entidades/usuario.php";
+
+if($_POST){
+    $usuarioIngresado = trim($_POST["txtUsuario"]);
+    $claveIngresada = trim($_POST["txtClave"]);
+    
+    $usuario = new Usuario();
+    $usuario->obtenerPorUsuario($usuarioIngresado);
+
+    
+  }
+
+
 
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
-    <?php
-
-    $claveEncriptada = password_hash("admin123", PASSWORD_DEFAULT);
-
-    if($_POST){
-      $usuario = trim($_POST["txtUsuario"]);
-      $clave = trim($_POST["txtClave"]);
-    
-    }
-
-    ?>
 <head>
 
     <meta charset="utf-8">
@@ -54,22 +56,29 @@ session_start();
                             <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
                             <div class="col-lg-6">
                                 <div class="p-5">
-                                    <?php 
-                                        if($_POST){
-                                            
-                                            if ($usuario == "admin" && $clave == password_verify($clave, $claveEncriptada)){
-                                                $nombre = "Mauro Arias";
-                                                $_SESSION["nombre"] = $nombre;
-                                                header("Location: index.php");
-                                            } else {
-                                                $msg = "El usuario o la clave es incorrecto";
-                                                echo " <div class='alert alert-danger' role='alert'>" . $msg ."  </div>";
-                                            }
-                                        }
-                                    ?>
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Bienvenido!</h1>
                                     </div>
+
+                                    <?php
+                                        if($_POST){
+                                            if($usuario->usuario == $usuarioIngresado){
+                                                if($usuario->verificarClave($claveIngresada, $usuario->clave)){
+                                                    $_SESSION["nombre"] = $usuario->nombre;
+                                        
+                                                    header("location:index.php");
+                                                } else{
+                                                    $msg = "La contraseña es incorrecta";
+                                                    echo "<div class = ' mb-4 card bg-danger text-white shadow'><div class = 'card-body'>$msg</div></div>";
+    
+                                                }
+                                            } else{
+                                                $msg = "El usuario no existe";
+                                                echo "<div class = ' mb-4 card bg-danger text-white shadow'><div class = 'card-body'>$msg</div></div>";
+    
+                                            }
+                                        } 
+                                    ?>
                                     <form class="user" method="POST" action="">
                                         <div class="form-group">
                                             <input type="text" class="form-control form-control-user"
