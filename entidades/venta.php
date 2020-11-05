@@ -192,6 +192,34 @@ class Venta{
 
         return $aResultado;
     }
+
+    public function obtenerFacturacionMensual($mes){
+        $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
+
+        $sql = "SELECT SUM(total) AS importe_mensual FROM ventas WHERE $mes = EXTRACT(MONTH FROM fecha_hora);";
+
+        $resultado = $mysqli->query($sql);
+        
+        if($fila = $resultado->fetch_assoc()){
+            $importeMensual = $fila["importe_mensual"];
+        }
+
+        return $importeMensual;
+    }
+
+    public function obtenerFacturacionAnual($año){
+        $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
+
+        $sql = "SELECT SUM(total) AS importe_anual FROM ventas WHERE $año = EXTRACT(YEAR FROM fecha_hora);";
+        
+        $resultado = $mysqli->query($sql);
+        
+        if($fila = $resultado->fetch_assoc()){
+            $importeAnual = $fila["importe_anual"];
+        }
+
+        return $importeAnual;
+    }
 }
 
 ?>
