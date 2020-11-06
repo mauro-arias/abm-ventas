@@ -220,6 +220,7 @@ class Venta{
 
         return $importeAnual;
     }
+
 }
 
 ?>
