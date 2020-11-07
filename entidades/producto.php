@@ -32,21 +32,6 @@ class Producto{
         $this->precio = isset($request["nbPrecio"])? $request["nbPrecio"] : "";
         $this->descripcion = isset($request["txtDescripcion"])? $request["txtDescripcion"] : "";
         $this->fk_idtipoproducto = isset($request["lstTipoProducto"])? $request["lstTipoProducto"] : "";
-        $this->imagen = "";
-
-        # Cargar imagen
-        if(isset($_POST["btnGuardar"])){
-            if($_FILES["fileImagen"]["error"] === UPLOAD_ERR_OK){
-                $nombreAleatorio = date("Ymdhmsi");
-                $archivo_temp = $_FILES["fileImagen"]["tmp_name"];
-                $nombreArchivo = $_FILES["fileImagen"]["name"];
-                $extension = pathinfo($nombreArchivo, PATHINFO_EXTENSION);
-                $nombreImagen = $nombreAleatorio . "." . $extension;
-                move_uploaded_file($archivo_temp, "images/$nombreImagen");
-                $this->imagen = $nombreImagen;
-            }
-        }
-
     }
 
     #Insertar en la base de datos
@@ -150,6 +135,7 @@ class Producto{
             $this->precio = $fila["precio"];
             $this->descripcion = $fila["descripcion"];
             $this->fk_idtipoproducto = $fila["fk_idtipoproducto"];
+            $this->imagen = $fila["imagen"];
         }  
         $mysqli->close();
     }

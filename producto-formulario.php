@@ -15,10 +15,42 @@ $aTipoProductos = $tipoproducto->obtenerTodos();
 
 if($_POST){
   if(isset($_POST["btnGuardar"])){
+    if($_FILES["fileImagen"]["error"] === UPLOAD_ERR_OK){
+      $nombreAleatorio = date("Ymdhmsi");
+      $archivo_temp = $_FILES["fileImagen"]["tmp_name"];
+      $nombreArchivo = $_FILES["fileImagen"]["name"];
+      $extension = pathinfo($nombreArchivo, PATHINFO_EXTENSION);
+      $nombreImagen = $nombreAleatorio . "." . $extension;
+      move_uploaded_file($archivo_temp, "images/$nombreImagen");
+      $producto->imagen = $nombreImagen;
+    }
+
     if(isset($_GET["id"]) && $_GET["id"] > 0){
+
+      // Si se actualiza
+
+      $productoAnt = new Producto();
+      $productoAnt->idproducto = $_GET["id"];
+      $productoAnt->obtenerPorId();
+
+      $imagenAnterior = $productoAnt->imagen;
+
+      // Si sube imagen, actualiza y elimina la anterior
+
+      if($_FILES["fileImagen"]["error"] === UPLOAD_ERR_OK){
+        if($imagenAnterior != ""){
+          unlink("images/".$imagenAnterior);
+        }
+      } else{
+        $nombreImagen = $imagenAnterior;
+      }
+
+      $producto->imagen = $nombreImagen;
       $producto->actualizar();
       $mensaje = "El producto se actualizó correctamente";
     } else{
+      // Se inserta
+
       $producto->insertar();
       $mensaje = "El producto se registró correctamente";
     }
