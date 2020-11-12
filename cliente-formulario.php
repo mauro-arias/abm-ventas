@@ -11,6 +11,8 @@ include_once "entidades/venta.php";
 $cliente = new Cliente();
 $cliente->cargarFormulario($_REQUEST);
 
+$venta = new Venta;
+
 
 if($_POST){
   if(isset($_POST["btnGuardar"])){
@@ -23,8 +25,13 @@ if($_POST){
     }
 
   } else if(isset($_POST["btnBorrar"])){
-    $cliente->eliminar();
-    $mensaje = "El cliente se eliminó correctamente";
+    $cantidadVentas = $venta->obtenerVentasPorCliente($_GET["id"]);
+    if($cantidadVentas > 0){
+      $mensaje = "No se puede eliminar al cliente, tiene ventas pendientes";
+    } else {
+      $cliente->eliminar();
+      $mensaje = "El cliente se eliminó correctamente";
+    }
   }
 }
 
@@ -140,7 +147,12 @@ if(isset($_GET["id"]) && $_GET["id"] > 0){
             <?php if(isset($_POST["btnGuardar"])){
                 echo "<div class = ' mb-4 card bg-success text-white shadow'><div class = 'card-body'>$mensaje</div></div>";
               } else if(isset($_POST["btnBorrar"]) && isset($_GET["id"])){
+                if($cantidadVentas > 0){
                   echo "<div class = ' mb-4 card bg-danger text-white shadow'><div class = 'card-body'>$mensaje</div></div>";
+                } else{
+                  echo "<div class = ' mb-4 card bg-danger text-white shadow'><div class = 'card-body'>$mensaje</div></div>";
+                }
+                  
               } else if(isset($_POST["btnGuardar"]) && isset($_GET["id"])){
                   echo "<div class = ' mb-4 card bg-danger text-white shadow'><div class = 'card-body'>$mensaje</div></div>";
               }

@@ -221,6 +221,23 @@ class Venta{
         return $importeAnual;
     }
 
+    public function obtenerVentasPorCliente($id){
+        $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
+
+        $sql = "SELECT COUNT(*) as cantidad FROM ventas WHERE fk_cliente = $id";
+
+        if(!$resultado = $mysqli->query($sql)){
+            printf("Error en query: %s\n", $mysqli->error . " " . $sql);
+        }
+
+        if($fila = $resultado->fetch_assoc()){
+            $cantidad = $fila["cantidad"];
+        }
+
+        return $cantidad;
+
+    }
+
 }
 
 ?>
