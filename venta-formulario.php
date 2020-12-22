@@ -37,6 +37,21 @@ if(isset($_GET["id"]) && $_GET["id"] > 0){
   $venta->obtenerPorId();
 }
 
+
+if(isset($_GET["do"]) && $_GET["do"] == "buscarProducto"){
+  $producto = new Producto();
+  $producto->idproducto = $_GET["id"];
+  $producto->obtenerPorId();
+
+  $aResultado = array();
+  $aResultado["cantidad"] = $producto->cantidad;
+  $aResultado["precio"] = $producto->precio;
+  echo json_encode($aResultado);
+  exit;
+}
+
+
+
 ?>
 
 
@@ -185,7 +200,7 @@ if(isset($_GET["id"]) && $_GET["id"] > 0){
 
               <div class="col-12 col-sm-6 form-group dropdown bootstrap-select">
                 <label for="lstProducto">Producto:</label>
-                <select name="lstProducto" id="lstProducto" class = "form-control selectpicker border" data-live-search="true">
+                <select name="lstProducto" id="lstProducto" class = "form-control selectpicker border" data-live-search="true" onchange="fBuscarPrecioUnitario();">
                 <?php foreach($aProductos as $producto){?>
                   <option value="<?php echo $producto->idproducto ?>"><?php echo $producto->nombre ?></option>
                 <?php } ?>
@@ -194,17 +209,18 @@ if(isset($_GET["id"]) && $_GET["id"] > 0){
 
               <div class="col-12 col-sm-6 form-group">
                 <label for="nbPUnitario">Precio unitario:</label>
-                <input required type="number" value = "<?php echo $venta->precio;?>" class = "form-control" name ="nbPUnitario" id = "nbPUnitario" >
+                <input readonly required type="number" value = "<?php echo $venta->precio;?>" class = "form-control" name ="nbPUnitario" id = "nbPUnitario" >
               </div>
 
               <div class="col-12 col-sm-6 form-group">
                 <label for="nbCantidad">Cantidad:</label>
-                <input required type="number" value = "<?php echo $venta->cantidad;?>" class = "form-control" name ="nbCantidad" id = "nbCantidad" >
+                <input required type="number" value = "<?php echo $venta->cantidad;?>" class = "form-control" name ="nbCantidad" id = "nbCantidad" onchange = "calcularTotal()">
+                <span id = "stockError" style="display: none; color: red;">No hay suficiente sotck</span>
               </div>
 
               <div class="col-12 col-sm-6 form-group">
                 <label for="nbTotal">Total:</label>
-                <input required type="number" value = "<?php echo $venta->total;?>" class = "form-control" name ="nbTotal" id = "nbTotal" >
+                <input readonly required type="text" value = "<?php echo $venta->total;?>" class = "form-control" name ="nbTotal" id = "nbTotal" >
               </div>
 
               
@@ -225,6 +241,52 @@ if(isset($_GET["id"]) && $_GET["id"] > 0){
           <!-- /.container-fluid -->
 
         </div>
+
+        <script>
+
+
+          function fBuscarPrecioUnitario(){
+            idProducto = $("#lstProducto").val();
+            $.ajax({
+              type: "GET",
+              url: "venta-formulario.php?do=buscarProducto",
+              data: { id:idProducto },
+              async: true,
+              dataType: "json",
+              success: function(respuesta){
+                $("#nbPUnitario").val(respuesta.precio);
+              }
+            });
+          }
+
+          function calcularTotal(){
+            var cantidad = $("#nbCantidad").val();
+            var idProducto = $("#lstProducto").val();
+            var precio = $("#nbPUnitario").val();
+            $.ajax({
+              type: "GET",
+              url: "venta-formulario.php?do=buscarProducto",
+              data: { id:idProducto },
+              async: true,
+              dataType: "json",
+              success: function(respuesta){
+                let resultado = 0;
+                if(cantidad < respuesta.cantidad){
+                  resultado = precio * cantidad;
+                  $("#stockError").hide();
+                } else{
+                  $("#stockError").show();
+                }
+                strResultado = Intl.NumberFormat("es-AR", {style: 'currency', currency: 'ARS'}).format(resultado);
+                $("#nbTotal").val(strResultado);
+                // $("#nbTotal").val(resultado)
+              }
+            })
+          }
+
+
+            
+        </script>
         <!-- End of Main Content -->
 
         <!-- Footer -->
